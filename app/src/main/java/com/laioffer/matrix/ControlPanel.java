@@ -100,6 +100,8 @@ public class ControlPanel extends AppCompatActivity {
                     }
                 }
         );
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, MainFragment.newInstance()).commit();
     }
 
     private void logout() {
