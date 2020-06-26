@@ -85,21 +85,21 @@ public class ControlPanel extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
-                        // close drawer when item is lapped
+                        // close drawer when item is tapped
                         drawerLayout.closeDrawers();
-                        // update UI based on the item selected
-                        // swap UI fragment
-                        if (menuItem.getItemId() == R.id.drawer_layout) {
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+                        if (menuItem.getItemId() == R.id.drawer_logout) {
                             Config.username = null;
                             logout();
                         }
                         return true;
                     }
-                }
-        );
+                });
+
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, MainFragment.newInstance()).commit();
     }
