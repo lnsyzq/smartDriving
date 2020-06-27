@@ -1,5 +1,7 @@
 package com.laioffer.matrix;
 
+import android.graphics.Bitmap;
+import android.graphics.Camera;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,9 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 /**
@@ -21,6 +33,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 public class MainFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView;
     private View view;
+    private GoogleMap googleMap;
+    private LocationTracker locationTracker;
+    private FloatingActionButton fabReport;
 
     public static MainFragment newInstance() {
         Bundle args = new Bundle();
@@ -46,6 +61,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mapView = (MapView) view.findViewById(R.id.event_map_view);
+
+        fabReport = (FloatingActionButton)view.findViewById(R.id.fab);
+        fabReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // show dialog
+            }
+        });
+
         if (mapView != null) {
             mapView.onCreate(null);
             mapView.onResume();
@@ -73,6 +97,24 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        MapsInitializer.initialize(getContext());
+
+        this.googleMap = googleMap;
+        this.googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.style_json));
+        locationTracker = new LocationTracker(getActivity());
+        locationTracker.getLocation();
+
+        LatLng latLng = new LatLng(locationTracker.getLatitute(), locationTracker.getLongitute());
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(16).bearing(90).tilt(30).build();
+
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        MarkerOptions marker = new MarkerOptions().position(latLng).title("You");
+
+        // changing marker icon
+        marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.boy));
+        // adding marker
+        googleMap.addMarker(marker);
 
     }
 }
