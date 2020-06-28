@@ -36,6 +36,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private LocationTracker locationTracker;
     private FloatingActionButton fabReport;
+    private ReportDialog dialog;
 
     public static MainFragment newInstance() {
         Bundle args = new Bundle();
@@ -67,6 +68,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 // show dialog
+                showDialog(null,null);
             }
         });
 
@@ -93,6 +95,13 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    private void showDialog(String label, String prefillText) {
+        int cx = (int) (fabReport.getX() + (fabReport.getWidth() / 2));
+        int cy = (int) (fabReport.getY()) + fabReport.getHeight() + 56;
+        dialog = ReportDialog.newInstance(getContext(), cx, cy);
+        dialog.show();
     }
 
     @Override
