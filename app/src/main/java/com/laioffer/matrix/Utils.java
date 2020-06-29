@@ -16,8 +16,6 @@ public class Utils {
             byte[] resultByte = messageDigest.digest();
             result = new String(Hex.encodeHex(resultByte));
 
-//            result = Hex.encodeHexString(resultByte);
-
         }catch(Exception ex){
             ex.printStackTrace();
         }
