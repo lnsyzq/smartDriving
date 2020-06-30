@@ -37,6 +37,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     private LocationTracker locationTracker;
     private FloatingActionButton fabReport;
     private ReportDialog dialog;
+    private FloatingActionButton fabFocus;
 
     public static MainFragment newInstance() {
         Bundle args = new Bundle();
@@ -69,6 +70,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View v) {
                 // show dialog
                 showDialog(null,null);
+            }
+        });
+
+        fabFocus = view.findViewById(R.id.fab_focus);
+
+        fabFocus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mapView.getMapAsync(MainFragment.this);
             }
         });
 
