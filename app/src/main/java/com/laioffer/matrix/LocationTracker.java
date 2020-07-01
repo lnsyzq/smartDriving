@@ -75,14 +75,14 @@ public class LocationTracker implements LocationListener {
         return location;
     }
 
-    public double getLatitute() {
+    public double getLatitude() {
         if (location != null) {
             latitute = location.getLatitude();
         }
         return latitute;
     }
 
-    public double getLongitute() {
+    public double getLongitude() {
         if (location != null) {
             longitute = location.getLongitude();
         }

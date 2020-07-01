@@ -58,8 +58,8 @@ public class ControlPanel extends AppCompatActivity {
                 final TextView location_textview = (TextView) drawerView.findViewById(R.id.user_location);
                 // Respond when the drawer is opened
                 mLocationTracker.getLocation();
-                final double longtitute = mLocationTracker.getLongitute();
-                final double laitute = mLocationTracker.getLatitute();
+                final double longtitute = mLocationTracker.getLongitude();
+                final double laitute = mLocationTracker.getLatitude();
 
                 if (Config.username == null) {
                     user_textview.setText("");
