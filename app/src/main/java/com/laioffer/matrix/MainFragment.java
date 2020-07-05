@@ -339,15 +339,15 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Report
         database.child("events").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                googleMap.clear();
+                locationTracker.getLocation();
+                double centerLatitude = locationTracker.getLatitude();
+                double centerLongitude = locationTracker.getLongitude();
+
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
                     TrafficEvent event = noteDataSnapshot.getValue(TrafficEvent.class);
                     double eventLatitude = event.getEvent_latitude();
                     double eventLongitude = event.getEvent_longitude();
-
-                    locationTracker.getLocation();
-                    double centerLatitude = locationTracker.getLatitude();
-                    double centerLongitude = locationTracker.getLongitude();
-
 
                     int distance = Utils.distanceBetweenTwoLocations(centerLatitude, centerLongitude,
                             eventLatitude, eventLongitude);
@@ -370,6 +370,13 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Report
                         mker.setTag(event);
                     }
                 }
+                MarkerOptions marker = new MarkerOptions().position(new LatLng(centerLatitude, centerLongitude)).
+                        title("You");
+
+                // Changing marker icon
+                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.boy));
+                googleMap.addMarker(marker);
+
             }
 
             @Override
@@ -441,6 +448,18 @@ public class MainFragment extends Fragment implements OnMapReadyCallback, Report
         mEventTextType = (TextView) view.findViewById(R.id.event_info_type_text);
         mEventTextLocation = (TextView) view.findViewById(R.id.event_info_location_text);
         mEventTextTime = (TextView) view.findViewById(R.id.event_info_time_text);
+
+
+        mEventImageLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int number = Integer.parseInt(mEventTextLike.getText().toString());
+                database.child("events").child(mEvent.getId()).child("event_like_number").setValue(number + 1);
+                mEventTextLike.setText(String.valueOf(number + 1));
+                loadEventInVisibleMap();
+            }
+        });
+
     }
 
 
