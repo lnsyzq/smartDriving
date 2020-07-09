@@ -7,6 +7,8 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -42,12 +44,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
+            sendNotification(remoteMessage);
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
         }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
     }
@@ -57,8 +60,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Create and show a simple notification containing the received FCM message.
      */
-    private void sendNotification(String title, String body) {
-
+    private void sendNotification(RemoteMessage remoteMessage) {
+        String type = remoteMessage.getData().get("type");
+        String description = remoteMessage.getData().get("description");
+        Bitmap icon =  BitmapFactory.decodeResource(mContext.getResources(),
+                Config.trafficMap.get(type));
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         Intent intent = new Intent(getApplicationContext(), ControlPanel.class);
@@ -82,10 +88,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.boy)
-                .setContentTitle(title)
+                .setContentTitle(type)
                 .setAutoCancel(true)
                 .setSound(defaultSound)
-                .setContentText(body)
+                .setLargeIcon(icon)
+                .setContentText(description)
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
                 .setPriority(Notification.PRIORITY_MAX);
