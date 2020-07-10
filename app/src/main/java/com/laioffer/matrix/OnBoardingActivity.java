@@ -56,6 +56,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         viewpager = findViewById(R.id.viewpager);
         OnBoardingPageAdapter onBoardingPageAdapter = new OnBoardingPageAdapter((getSupportFragmentManager()));
         viewpager.setAdapter(onBoardingPageAdapter);
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewpager);
     }
