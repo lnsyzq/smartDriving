@@ -45,10 +45,19 @@ public class ReportDialog extends Dialog {
     private ImageView mEventTypeImg;
     private TextView mTypeTextView;
     private DialogCallBack mDialogCallBack;
+    private String mPrefillText;
+
 
     public void updateImage(Bitmap bitmap) {
         mImageCamera.setImageBitmap(bitmap);
     }
+
+    public void setVocieInfor(String event_type, String prefillText) {
+        mEventtype = event_type;
+        mPrefillText = prefillText;
+
+    }
+
 
     interface DialogCallBack {
         void onSubmit(String editString, String event_type);
@@ -108,6 +117,18 @@ public class ReportDialog extends Dialog {
 
         setUpEventSpecs(dialogView);
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mEventtype != null) {
+            showNextViewSwitcher(mEventtype);
+        }
+        if (mPrefillText != null) {
+            mCommentEditText.setText(mPrefillText);
+        }
+    }
+
 
     public void setDialogCallBack(DialogCallBack dialogCallBack) {
         mDialogCallBack = dialogCallBack;

@@ -38,8 +38,15 @@
         </activity>
 
         <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDqosFlwcsySc1aZxgzM7yxoudJS1xK_aM" />
+
     </application>
+
+
 
 </manifest>
